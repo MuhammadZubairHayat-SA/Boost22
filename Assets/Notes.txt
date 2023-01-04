@@ -1,0 +1,9 @@
+Two scenes in \Assets\Scenes\Skillz
+	StartScreen_Skillz should open and go to Skillz when pressing "Play Now"
+	GameScene_Skillz handles the game and should return to Skillz after the game ends
+
+SkillzGameStarter in \Assets\Scripts\Skillz
+	Sets seed for random number generator and starts the game directly, loading the next scene.
+
+GameManager in \Assets\Scripts\Managers
+	Manages the game and stores score in "skillzLiveScore"

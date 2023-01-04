@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Facebook.Unity;
-using Facebook.MiniJSON;
+//using Facebook.Unity;
+//using Facebook.MiniJSON;
 using Managers.API;
 
 public class ConnectWithFacebookMenu : MonoBehaviour 
@@ -18,7 +18,7 @@ public class ConnectWithFacebookMenu : MonoBehaviour
 	public CanvasGroup spinnner;
 
 	
-	public void ShowSpinner ()
+	/*public void ShowSpinner ()
 	{
 		spinnner.alpha = 1;
 		spinnner.blocksRaycasts = true;
@@ -209,5 +209,5 @@ public class ConnectWithFacebookMenu : MonoBehaviour
             HideSpinner();
             DisplayErrorMessage("No internet connection", -1);
         }
-    }
+    }*/
 }

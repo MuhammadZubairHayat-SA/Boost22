@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Facebook.Unity;
+//using Facebook.Unity;
 
 public class LobbyGuide : MonoBehaviour 
 {
@@ -53,12 +53,12 @@ public class LobbyGuide : MonoBehaviour
  * For more details, please take a look at:
  * developers.facebook.com/docs/unity/reference/current/FB.LogAppEvent
  */
-    public void LogCompleteTutorialEvent(string contentType /*string contentData, string contentId, bool success*/)
+    /*public void LogCompleteTutorialEvent(string contentType) //string contentData, string contentId, bool success
     {
         var parameters = new Dictionary<string, object>();
         //parameters[AppEventParameterName.Content] = contentData;
         parameters[AppEventParameterName.ContentID] = contentType; //contentId;
-        parameters[AppEventParameterName.Success] = 1; /* success ? 1 : 0;*/
+        parameters[AppEventParameterName.Success] = 1; // success ? 1 : 0;
         FB.LogAppEvent(AppEventName.CompletedTutorial, 0.0f, parameters);
     }
 
@@ -72,5 +72,5 @@ public class LobbyGuide : MonoBehaviour
 		parameters[AppEventParameterName.Currency] = "0 USD";
 
 		FB.LogAppEvent(AppEventName.ViewedContent, 0.0f, parameters);
-	}
+	}*/
 }

@@ -137,7 +137,8 @@ public class GameViewController : MonoBehaviour
         {
             return;
         }
-		if (isRushGame && GameManager.shared.currentEvent != null)
+		
+		/*if (isRushGame && GameManager.shared.currentEvent != null)
 		{
 			rankScoreView.SetActive(false);
 			rushRankScoreView.SetActive(true);
@@ -178,13 +179,13 @@ public class GameViewController : MonoBehaviour
 			rankScoreView.transform.Find("RankingText").GetComponent<TextMeshProUGUI>().text = string.Empty;
 			rankScore.text = "Playground Mode";
 			rankScoreView.SetActive(true);
-		}
+		}*/
 	}
 
 	private bool hasPromptedForRush = false;
 	private void LateUpdate() 
 	{
-        var nextRushEvent = UserManager.LoggedInUser.GetNextRushEvent();
+		var nextRushEvent = UserManager.LoggedInUser.GetNextRushEvent();
 
         if (nextRushEvent != null)
 		{
@@ -365,6 +366,7 @@ public class GameViewController : MonoBehaviour
 		}
 	}
 
+
 	public void PlayAgain(bool isTurbo) 
 	{
 		sceneLoadingScreen.SetTrigger("open");
@@ -477,7 +479,7 @@ public class GameViewController : MonoBehaviour
 							errorPrompt.message.text = Api.ErrorMessage(type);
 							errorPrompt.Show();
 						}*/
-					}
+	}
 				});
 			}
 		}
@@ -556,7 +558,7 @@ public class GameViewController : MonoBehaviour
 			//rushLeaderboardView.SetActive(true);
 			Delays.SetGameTempo(2.5f);
 		}
-		else if (GameObject.Find("GameStarter").GetComponent<GameStarter>().IsPlaygroundGame() && SceneManager.GetActiveScene().buildIndex == 3)
+		else if (GameObject.Find("GameStarter").GetComponent<GameStarter>() != null && GameObject.Find("GameStarter").GetComponent<GameStarter>().IsPlaygroundGame() && SceneManager.GetActiveScene().buildIndex == 3)
 		{
 			isPlaygroundGame = true;
 		}
@@ -576,7 +578,10 @@ public class GameViewController : MonoBehaviour
 			}
 		}
 
-		lobbyButton.GetComponent<Button>().interactable = true;
+		if (lobbyButton != null && lobbyButton.activeInHierarchy && lobbyButton.GetComponent<Button>() != null)
+		{
+			lobbyButton.GetComponent<Button>().interactable = true;
+		}
 	}
 
 
@@ -611,7 +616,7 @@ public class GameViewController : MonoBehaviour
 
 	public void GameOver ()
 	{
-
+		
 	}
 
 
@@ -912,6 +917,19 @@ public class GameViewController : MonoBehaviour
 	}
 
 
+	public void UpdateSkillzLiveScore (int liveScore)
+	{
+		StartCoroutine(DisplaySkillzLiveScoreDelayed(liveScore));
+	}
+
+
+	private IEnumerator DisplaySkillzLiveScoreDelayed (int liveScore)
+	{
+		yield return new WaitForSeconds(Delays.clearTableDelay + Delays.revealLastCardsDelay);
+		rankScore.text = liveScore + (liveScore == 1 ? " point" : " points");
+	}
+
+
 	public void ShowHideAvatars ()
 	{
 		showAvatars = !showAvatars;
@@ -1004,20 +1022,19 @@ public class GameViewController : MonoBehaviour
 		DeactivateButtons();
 		StartCoroutine(PlayClipDelayed(wonGameSound, Delays.revealLastCardsDelay + Delays.wonGameScoreboardDelay));
 
-		GameManager.shared.SendPoints();
-
+		/*GameManager.shared.SendPoints();
 		if (buttonViewCoroutine != null)
 		{
 			StopCoroutine(buttonViewCoroutine);
 		}
 		buttonViewCoroutine = StartCoroutine(buttonView.GameOver(Delays.revealLastCardsDelay + Delays.wonGameScoreboardDelay, isRushGame));
-
         if (isPlaygroundGame)
         {
             buttonView.DoneSaving();
-        }
-		
+        }*/
+		buttonView.DoneSaving();
 		gameHasEnded = true;
+		FindObjectOfType<SkillzGameStarter>().GoBackToStartScreen();
 	}
 
 
@@ -1030,7 +1047,7 @@ public class GameViewController : MonoBehaviour
 		
 		StartCoroutine(PlayClipDelayed(lostGameSound, Delays.revealLastCardsDelay + Delays.lostGameScoreboardDelay));
 
-		GameManager.shared.SendPoints();
+		/*GameManager.shared.SendPoints();
 		if (buttonViewCoroutine != null)
 		{
 			StopCoroutine(buttonViewCoroutine);
@@ -1039,8 +1056,10 @@ public class GameViewController : MonoBehaviour
         if (isPlaygroundGame)
         {
             buttonView.DoneSaving();
-        }
-        gameHasEnded = true;
+        }*/
+		buttonView.DoneSaving();
+		gameHasEnded = true;
+		FindObjectOfType<SkillzGameStarter>().GoBackToStartScreen();
 	}
 
 
@@ -1573,6 +1592,7 @@ public class GameViewController : MonoBehaviour
 		}
 	}
 
+
     public void LoadYourScene(int sceneIndex, bool loadAsync = true)
     {
         if (sceneCoroutine != null)
@@ -1590,6 +1610,7 @@ public class GameViewController : MonoBehaviour
 			SceneManager.LoadScene(sceneIndex);
 		}
     }
+
 
     private IEnumerator LoadYourAsyncScene(int sceneIndex)
     {

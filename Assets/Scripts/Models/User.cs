@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using UnityEngine;
 
 [Serializable]
@@ -54,8 +55,10 @@ public class User
     {
         if (nextRushEvent != null && nextRushEvent.eventType != Enums.GameEventType.NoType)
         {
+	        Debug.Log("A" + nextRushEvent);
             return nextRushEvent;
         }
+        Debug.Log("A" + nextRushEvent);
         return null;
     }
 

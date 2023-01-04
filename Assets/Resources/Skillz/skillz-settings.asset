@@ -36,6 +36,6 @@ MonoBehaviour:
     Value: 
   - Key: 
     Value: 
-  SimulateMatchWins: 1
+  SimulateMatchWins: 0
   AllowSkillzExit: 1
   HasSyncBot: 0

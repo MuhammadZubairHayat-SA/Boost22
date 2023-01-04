@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using Facebook.Unity;
+//using Facebook.Unity;
 using Managers.API;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,16 +23,14 @@ public class Menus : MonoBehaviour
 
 	void Awake ()
 	{
-		if (FB.IsInitialized) {
+		/*if (FB.IsInitialized) {
 			FB.ActivateApp();
 		} else {
 			//Handle FB.Init
 			FB.Init( () => {
 				FB.ActivateApp();
 			});
-		}
-
-		
+		}*/
 	}
 
 	void Start () 
@@ -154,14 +152,14 @@ public class Menus : MonoBehaviour
 		// or background
 		if (!pauseStatus) {
 			//app resume
-			if (FB.IsInitialized) {
+			/*if (FB.IsInitialized) {
 				FB.ActivateApp();
 			} else {
 				//Handle FB.Init
 				FB.Init( () => {
 					FB.ActivateApp();
 				});
-			}
+			}*/
 		}
 	}
 

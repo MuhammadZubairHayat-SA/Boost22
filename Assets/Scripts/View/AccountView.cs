@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using Facebook.Unity;
+//using Facebook.Unity;
 using Managers.API;
 
 public class AccountView : MonoBehaviour
@@ -260,7 +260,7 @@ public class AccountView : MonoBehaviour
 		#if UNITY_ANDROID
 			if (!string.IsNullOrEmpty(UserManager.LoggedInUser.facebookId))
 			{
-				FB.API(UserManager.LoggedInUser.facebookId + "/picture?type=square&height=128&width=128", HttpMethod.GET, FbGetPicture);
+				//FB.API(UserManager.LoggedInUser.facebookId + "/picture?type=square&height=128&width=128", HttpMethod.GET, FbGetPicture);
 				facebookButton.gameObject.SetActive(false);
 			}
 			else
@@ -360,7 +360,7 @@ public class AccountView : MonoBehaviour
 	}
 
 
-    private void FbGetPicture(IGraphResult result)
+    /*private void FbGetPicture(IGraphResult result)
     {
         if (result.Texture != null)
         {
@@ -371,7 +371,7 @@ public class AccountView : MonoBehaviour
         {
             barUserImage.gameObject.SetActive(false);
         }
-    }
+    }*/
 
 
 	private void UpdateTimeUntilMidnight ()

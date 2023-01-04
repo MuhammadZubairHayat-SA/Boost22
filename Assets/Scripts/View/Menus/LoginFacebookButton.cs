@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using Facebook.Unity;
-using Facebook.MiniJSON;
+//using Facebook.Unity;
+//using Facebook.MiniJSON;
 using Managers.API;
 
 public class LoginFacebookButton : MonoBehaviour
@@ -10,7 +10,7 @@ public class LoginFacebookButton : MonoBehaviour
     public Menus menus;
 
 
-	public void Clicked ()
+	/*public void Clicked ()
 	{
 		if (loginRegisterMenu.termsAccepted)
 		{
@@ -233,5 +233,5 @@ public class LoginFacebookButton : MonoBehaviour
             }
             //UIManager.ShowNotification(Constants.alert1ButtonName, 0, false, I2.Loc.ScriptLocalization.Alert_Facebook_Login___No_net_title, I2.Loc.ScriptLocalization.Alert_Facebook_Login___No_net_message);
         }
-    }
+    }*/
 }

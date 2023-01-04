@@ -31,7 +31,7 @@ public class TimerRing : MonoBehaviour
 
 	void Update () 
 	{
-		if (countDown == true && timer > 0)
+		/*if (countDown == true && timer > 0)
 		{
 			timer -= Time.deltaTime;
 			timerImage.fillAmount = timer / time;
@@ -56,7 +56,7 @@ public class TimerRing : MonoBehaviour
 			{
 				audioSource.Stop();
 			}			
-		}
+		}*/
 	}
 
 
@@ -92,6 +92,6 @@ public class TimerRing : MonoBehaviour
 		if (tickWhenRunningOut)
 		{
 			audioSource.Stop();
-		}	
+		}
 	}
 }

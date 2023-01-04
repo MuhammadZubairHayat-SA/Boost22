@@ -7,7 +7,7 @@ using Managers.API;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Facebook.Unity;
+//using Facebook.Unity;
 
 public class LoginRegisterMenu : MonoBehaviour 
 {
@@ -83,20 +83,17 @@ public class LoginRegisterMenu : MonoBehaviour
 		UserApi.Create(userNameRegisterField.text, emailField.text, passwordRegisterField.text, Functions.GetInviteTokenFromClipboard(), (user, errorType) =>
 		{
 			Debug.Log("CREATE");
-			UserManager.LoggedInUser = user;
-			LogCompleteRegistrationEvent("In-App");
-			ProceedToLobby(showGuide : true);
-	//		if (errorType != Enums.NetworkErrorType.NoError)
-	//		{
-	//			DisplayErrorMessage(Api.ErrorMessage(errorType), 0);
-	//			Debug.Log(errorType);
-	//			HideSpinner();
-	//		} else
-	//		{
-	//			UserManager.LoggedInUser = user;
-	//			LogCompleteRegistrationEvent("In-App");
-	//			ProceedToLobby(showGuide : true);
-	//		}
+			if (errorType != Enums.NetworkErrorType.NoError)
+			{
+				DisplayErrorMessage(Api.ErrorMessage(errorType), 0);
+				Debug.Log(errorType);
+				HideSpinner();
+			} else
+			{
+				UserManager.LoggedInUser = user;
+				//LogCompleteRegistrationEvent("In-App");
+				ProceedToLobby(showGuide : true);
+			}
 		});
 	}
 
@@ -107,7 +104,6 @@ public class LoginRegisterMenu : MonoBehaviour
 		{
 			if (errorType != Enums.NetworkErrorType.NoError)
 			{
-				ProceedToLobby();
 				DisplayErrorMessage(Api.ErrorMessage(errorType), 1);
 				Debug.Log(errorType);
 				HideSpinner();
@@ -523,7 +519,7 @@ public class LoginRegisterMenu : MonoBehaviour
 	}
 
 
-	public void LogCompleteRegistrationEvent (string registrationMethod) 
+	/*public void LogCompleteRegistrationEvent (string registrationMethod) 
 	{
     	var registrationParameters = new Dictionary<string, object>();
     	registrationParameters[AppEventParameterName.RegistrationMethod] = registrationMethod;
@@ -533,5 +529,5 @@ public class LoginRegisterMenu : MonoBehaviour
 		var levelParameters = new Dictionary<string, object>();
     	levelParameters[AppEventParameterName.Level] = "Sign-up";
     	FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, levelParameters);
-	}
+	}*/
 }

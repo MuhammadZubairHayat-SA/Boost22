@@ -19,12 +19,6 @@ public class ScoreboardView : MonoBehaviour
 	private Animator animator;
 	private int[] scores;
 
-	public bool LeagueScene;
-	public bool RushScene;
-	public bool PlayGroundScene;
-
-
-
 
 	void Start () 
 	{
@@ -50,22 +44,6 @@ public class ScoreboardView : MonoBehaviour
 	private IEnumerator DisplayPlayerScore (int playerIndex, Player player, float delay)
 	{
 		yield return new WaitForSeconds(delay);
-
-		if(LeagueScene)
-        {
-			MatchController.LeagueScore = player.score;
-
-		}
-		else if(RushScene)
-        {
-			MatchController.RushScore = player.score;
-		}
-		else
-        {
-			MatchController.PlayGroundScore = player.score;
-		}
-
-		
 		nameTexts[playerIndex].text = player.user.username;
 		scoreTexts[playerIndex].text = player.score.ToString();
 	}
@@ -149,7 +127,7 @@ public class ScoreboardView : MonoBehaviour
 
 		playAgainButton.gameObject.SetActive(true);
 		MatchController.instance.UpdateData();
-		MatchController.instance.TryToSubmitScore();
+        MatchController.instance.TryToSubmitScore();
 	}
 
 
@@ -173,9 +151,9 @@ public class ScoreboardView : MonoBehaviour
 		}
 
 		headline.gameObject.SetActive(true);
-		playAgainButton.gameObject.SetActive(true);
 		MatchController.instance.UpdateData();
 		MatchController.instance.TryToSubmitScore();
+		playAgainButton.gameObject.SetActive(true);
 	}
 
 
@@ -191,5 +169,11 @@ public class ScoreboardView : MonoBehaviour
 
 			rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, positions[i].anchoredPosition.y);
 		}
+	}
+
+	public void GameWonBtn()
+	{
+		MatchController.instance.UpdateData();
+		MatchController.instance.TryToSubmitScore();
 	}
 }

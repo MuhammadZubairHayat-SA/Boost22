@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Facebook.Unity;
+//using Facebook.Unity;
 using Managers.API;
 
 public class GameStarter : MonoBehaviour 
@@ -22,7 +22,7 @@ public class GameStarter : MonoBehaviour
 	
 	private void Awake ()
 	{
-		if (FB.IsInitialized) 
+		/*if (FB.IsInitialized) 
 		{
 			FB.ActivateApp();
 		} 
@@ -32,7 +32,7 @@ public class GameStarter : MonoBehaviour
 			FB.Init( () => {
 			FB.ActivateApp();
 			});
-		}
+		}*/
 
 		UpdateRushEvent();
 		Application.targetFrameRate = Screen.currentResolution.refreshRate;
@@ -61,7 +61,7 @@ public class GameStarter : MonoBehaviour
 		if (!pauseStatus) 
 		{
 			//app resume
-			if (FB.IsInitialized) 
+			/*if (FB.IsInitialized) 
 			{
 				FB.ActivateApp();
 			} 
@@ -71,7 +71,7 @@ public class GameStarter : MonoBehaviour
 				FB.Init( () => {
 					FB.ActivateApp();
 				});
-			}
+			}*/
 		}
 	}
 	

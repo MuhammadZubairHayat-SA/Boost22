@@ -79,7 +79,7 @@ public class UserManager
     {
         var robots = new List<Player>();
 
-        if (LoggedInUser != null)
+        /*if (LoggedInUser != null)
         {
             foreach (var robotType in LoggedInUser.robotTypes)
             {
@@ -87,11 +87,11 @@ public class UserManager
             }
         }
         else
-        {
-            robots.Add(new RobotPlayer(RandomAiUser(Enums.RobotType.Easy, robots.Select(r => r.user.id).ToList()), Enums.RobotType.Easy));
-            robots.Add(new RobotPlayer(RandomAiUser(Enums.RobotType.Easy, robots.Select(r => r.user.id).ToList()), Enums.RobotType.Easy));
-            robots.Add(new RobotPlayer(RandomAiUser(Enums.RobotType.Easy, robots.Select(r => r.user.id).ToList()), Enums.RobotType.Easy));
-        }
+        {*/
+            robots.Add(new RobotPlayer(RandomAiUser(Enums.RobotType.Hard, robots.Select(r => r.user.id).ToList()), Enums.RobotType.Hard));
+            robots.Add(new RobotPlayer(RandomAiUser(Enums.RobotType.Hard, robots.Select(r => r.user.id).ToList()), Enums.RobotType.Hard));
+            robots.Add(new RobotPlayer(RandomAiUser(Enums.RobotType.Hard, robots.Select(r => r.user.id).ToList()), Enums.RobotType.Hard));
+        //}
 
         robots.Shuffle();
         return robots;
@@ -298,7 +298,7 @@ public static class Extensions {
         int n = list.Count;
         while (n > 1) {
             n--;
-            int k = rng.Next(n + 1);
+            int k = UnityEngine.Random.Range(0, n + 1);//rng.Next(n + 1);
             T value = list[k];
             list[k] = list[n];
             list[n] = value;

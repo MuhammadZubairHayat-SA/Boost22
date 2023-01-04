@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Managers.API;
 using UnityEngine;
-using Facebook.Unity;
+//using Facebook.Unity;
 
 public enum AdjustRankingType {
 	UpdateRankingForClassicPlayers, UpdateRankingForAllPlayers, UpdateRankingWhenAbortingGame
@@ -15,11 +15,13 @@ public class GameManager
 	public Event currentEvent;
 	private Game game;
     bool isSendingPoints = false;
+	private int skillzLiveScore = 0;
 	
 
     public void NewGame (Enums.GameType gameType)
 	{
 		Debug.Log("Started new game");
+		skillzLiveScore = 0;
         isSendingPoints = false;
         game = Game.Create(gameType);
 		gameViewController.Setup(game.players.ToArray());
@@ -27,7 +29,7 @@ public class GameManager
 		FillCardPool();
 		StartHighAceMode();
 
-		GameStarter gameStarter = GameObject.FindObjectOfType(typeof(GameStarter)) as GameStarter;
+		/*GameStarter gameStarter = GameObject.FindObjectOfType(typeof(GameStarter)) as GameStarter;
 
 		if (!gameStarter.IsPlaygroundGame())
 		{
@@ -36,7 +38,7 @@ public class GameManager
         if (gameStarter.IsLeagueGame())
         {
 			UserManager.AdjustLeagueGamesCount();
-		}
+		}*/
 	}
 
 
@@ -99,12 +101,17 @@ public class GameManager
 	public void GameOver(bool gameCompleted)
 	{
 		if (gameCompleted) {
-			foreach (Player player in game.players)
+			for (int i = 0; i < game.players.Count; i++)
 			{
-				if (player.score == 0)
+				if (game.players[i].score == 0)
 				{
-					player.pointTypes.Add(Enums.PointType.CleanSheet);
-					gameViewController.DisplayCleanSheet(player.tablePosition, Delays.revealLastCardsDelay + Delays.newHandDelay + Delays.excludePlayersDelay);
+					game.players[i].pointTypes.Add(Enums.PointType.CleanSheet);
+					gameViewController.DisplayCleanSheet(game.players[i].tablePosition, Delays.revealLastCardsDelay + Delays.newHandDelay + Delays.excludePlayersDelay);
+					if (i == 0)
+					{
+						Debug.Log("SKILLZ: Player gets Clean Sheet bonus");
+						AddPointsToLiveScore(20);
+					}
 					//if (player.tablePosition == 0)
 					//{
 					//	gameViewController.DisplayBonus(3);
@@ -490,6 +497,11 @@ public class GameManager
 			currentPlayer.pointTypes.Add(Enums.PointType.FourOfAKind);
 			if (currentPlayer.tablePosition == 0)
 			{
+				Debug.Log("SKILLZ: Player gets Four of a Kind bonus");
+				AddPointsToLiveScore(20);
+			}
+			if (currentPlayer.tablePosition == 0)
+			{
 				gameViewController.DisplayBonus(4);
 			}
 		}
@@ -670,9 +682,17 @@ public class GameManager
 	}
 
 
+	private void AddPointsToLiveScore (int points)
+	{
+		skillzLiveScore += points;
+		gameViewController.UpdateSkillzLiveScore(skillzLiveScore);
+	}
+
+
     public void SendPoints(AdjustRankingType adjustRankingType = AdjustRankingType.UpdateRankingForAllPlayers)
 	{
-        if (isSendingPoints || GameObject.Find("GameStarter").GetComponent<GameStarter>().IsPlaygroundGame())
+        
+		if (isSendingPoints || GameObject.Find("GameStarter").GetComponent<GameStarter>() == null || GameObject.Find("GameStarter").GetComponent<GameStarter>().IsPlaygroundGame())
         {
             return;
         }
@@ -736,7 +756,7 @@ public class GameManager
 					game.resultsSentToServer = true;
                     gameViewController.UpdateRank(Delays.revealLastCardsDelay + Delays.lostGameScoreboardDelay);
 					List<Player> humanPlayers = game.players.Where(p => !p.user.IsAi()).ToList();
-					LogAchieveLevelEvent(humanPlayers[0].user);
+					//LogAchieveLevelEvent(humanPlayers[0].user);
                 }
 			});
 
@@ -912,10 +932,11 @@ public class GameManager
 	{
 		List<Card> sortedCards = cards.OrderBy(w => (int)w.cardType).ToList();
 		int numberOfLosers = 0;
+		bool playerIsLoser = false;
+		Enums.CardType excludedCardType = sortedCards[sortedCards.Count - 1].cardType;
 
 		if (game.gameType == Enums.GameType.Boost22)
 		{
-			Enums.CardType excludedCardType = sortedCards[sortedCards.Count - 1].cardType;
 			
 			for (int i = 0; i < sortedCards.Count; i++)
 			{
@@ -931,6 +952,12 @@ public class GameManager
 					game.players[playerIndex].AddPointToScore(Enums.CardTypeToInt(sortedCards[i].cardType));
 					gameViewController.SetPlayerScore(playerIndex, game.players.ToArray(), Delays.revealLastCardsDelay + Delays.newHandDelay + Delays.excludePlayersDelay);
 					gameViewController.ShowScoreInAvatar(playerIndex, game.players[playerIndex].score, true);
+
+					if (playerIndex == 0)
+					{
+						playerIsLoser = true;
+					}
+
 					numberOfLosers++;
 				}
 				else
@@ -977,10 +1004,18 @@ public class GameManager
 			}
 		}
 
+		int liveScorePoints = 0;
 		int winnerIndex = cards.IndexOf(sortedCards[0]);
 		if (numberOfLosers == 3)
 		{
+			if (!playerIsLoser)
+			{
+				Debug.Log("SKILLZ: Player gets Triple Knock-Out bonus");
+				liveScorePoints += 20;
+			}
+
 			game.players[winnerIndex].pointTypes.Add(Enums.PointType.KnockOut3);
+			
 			if (game.players[winnerIndex].tablePosition == 0)
 			{
 				gameViewController.DisplayBonus(6);
@@ -988,6 +1023,12 @@ public class GameManager
 		}
 		else if (numberOfLosers == 2)
 		{
+			if (!playerIsLoser)
+			{
+				Debug.Log("SKILLZ: Player gets Double Knock-Out bonus");
+				liveScorePoints += 10;
+			}
+
 			game.players[winnerIndex].pointTypes.Add(Enums.PointType.KnockOut2);
 			
 			int otherWinnerIndex = cards.IndexOf(sortedCards[1]);
@@ -998,6 +1039,20 @@ public class GameManager
 				gameViewController.DisplayBonus(5);
 			}
 		}
+
+		int losingCardValue = Enums.CardTypeToInt(excludedCardType);
+		if (!playerIsLoser)
+		{
+			liveScorePoints += losingCardValue * numberOfLosers;
+			Debug.Log("SKILLZ: Player is not the loser: Losing card: " + losingCardValue + ", Losers: " + numberOfLosers + ", Points: " + liveScorePoints);
+		}
+		else
+		{
+			liveScorePoints += -losingCardValue + losingCardValue * (numberOfLosers - 1);
+			Debug.Log("SKILLZ: Player is one of " + numberOfLosers + " losers: Losing card: " + losingCardValue + ", Losers: " + numberOfLosers + ", Points: " + liveScorePoints);
+		}
+		
+		AddPointsToLiveScore(liveScorePoints);
 	}
 
 
@@ -1221,7 +1276,7 @@ public class GameManager
 	}
 
 
-	private void LogAchieveLevelEvent (User user) 
+	/*private void LogAchieveLevelEvent (User user) 
 	{
         var gamesPlayed = user.numberOfGamesPlayedForFacebook;
         Debug.Log("Log Achieved Level. Games played: " + gamesPlayed);
@@ -1232,17 +1287,17 @@ public class GameManager
 		{
 			Debug.Log("Level Achieved: Rookie");
 			parameters[AppEventParameterName.Level] = "Rookie";
-			FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, parameters);
+			//FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, parameters);
 		}
 		else if (gamesPlayed == 24)
 		{
 			Debug.Log("Level Achieved: Player");
 			parameters[AppEventParameterName.Level] = "Player";
-			FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, parameters);
-		} /* else if ((gamesPlayed == 49 && invitedFriends >= 5) || (gamesPlayed >= 49 && invitedFriends == 5)) {
-            Debug.Log("Level Achieved: Ambassador");
-            parameters[AppEventParameterName.Level] = "Ambassador";
-            FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, parameters);
-        } */
-	}
+			//FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, parameters);
+		} // else if ((gamesPlayed == 49 && invitedFriends >= 5) || (gamesPlayed >= 49 && invitedFriends == 5)) {
+          //  Debug.Log("Level Achieved: Ambassador");
+          //  parameters[AppEventParameterName.Level] = "Ambassador";
+          //  FB.LogAppEvent(AppEventName.AchievedLevel, 0.0f, parameters);
+        } 
+	}*/
 }

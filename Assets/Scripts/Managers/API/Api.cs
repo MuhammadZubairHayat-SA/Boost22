@@ -12,7 +12,7 @@ public class Api : MonoBehaviour
 {
     public static bool forceUpdate;
 
-    private string apiAddress = ""; // Production
+    private string apiAddress = "https://production.cdwurmlfeuqe.eu-central-1.rds.amazonaws.com"; // Production
 
     private const string privateKey = "ttoH2oioHqdqjT+d3aWgNBedxVm730SbMRHZhBeVLs=";
 
@@ -59,11 +59,6 @@ public class Api : MonoBehaviour
         return "An unknown error occurred."; //"Der skete en ukendt fejl.";
     }
 
-    private void Start()
-    {
-        Debug.Log("Name" + gameObject.name);
-    }
-
     private static Dictionary<string, Enums.NetworkErrorType> errorTypeFromJsonMap = new Dictionary<string, Enums.NetworkErrorType>()
     {
         { "event is closed", Enums.NetworkErrorType.EventIsClosed },
@@ -98,12 +93,12 @@ public class Api : MonoBehaviour
 
             mInstance = (new GameObject("Api")).AddComponent<Api>();
 
-            //mInstance.apiAddress = "https://api2.cardgame.boost22.com/api/"; // Production
+            mInstance.apiAddress = "https://api2.cardgame.boost22.com/api/"; // Production
             //mInstance.apiAddress = "http://ec2-3-121-201-86.eu-central-1.compute.amazonaws.com:9191/api/"; // Development server
 
             //#if UNITY_EDITOR
             //// Localhost for test
-            mInstance.apiAddress = "http://0.0.0.0:9191/api/"; // Development localhost
+            //mInstance.apiAddress = "http://0.0.0.0:9191/api/"; // Development localhost
             //#endif
 
             DontDestroyOnLoad(mInstance);
