@@ -95,6 +95,11 @@ public class GameViewController : MonoBehaviour
 
 	private Coroutine sceneCoroutine;
 
+	private void OnEnable()
+	{
+		Screen.orientation=ScreenOrientation.LandscapeLeft;
+	}
+
 	void Start () 
 	{
 		GameManager.shared.gameViewController = this;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameID: 21422
   Environment: 1
-  Orientation: 0
+  Orientation: 1
   MatchParameters:
   - Key: 
     Value: 

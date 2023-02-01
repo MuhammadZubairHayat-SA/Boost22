@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class SkillzGameStarter : MonoBehaviour
 {
+    public GameObject FadeIn;
+    private void OnEnable()
+    {
+        Screen.orientation=ScreenOrientation.LandscapeLeft;
+    }
 
     void Start ()
     {
@@ -26,7 +33,7 @@ public class SkillzGameStarter : MonoBehaviour
 
     public void StartGame ()
     {
-        StartCoroutine(LoadYourAsyncScene(2));
+        StartCoroutine(LoadYourAsyncScene(1));
     }
 
 
@@ -36,9 +43,9 @@ public class SkillzGameStarter : MonoBehaviour
         {
             yield return new WaitForSeconds(Delays.revealLastCardsDelay + Delays.wonGameScoreboardDelay + delay);
         }
-
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);
-
+        FadeIn.SetActive(true);
+        Screen.orientation=ScreenOrientation.Portrait;
         while (!asyncLoad.isDone)
         {
             yield return null;

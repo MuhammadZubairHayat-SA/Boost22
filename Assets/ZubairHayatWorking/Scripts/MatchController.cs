@@ -1,8 +1,10 @@
 
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using SkillzSDK;
+using Random = UnityEngine.Random;
 
 public class MatchController : MonoBehaviour
 {
@@ -26,11 +28,7 @@ public class MatchController : MonoBehaviour
     };
 
     public int _retrySeconds;
-
-
-
-
-
+    
     private void Awake()
     {
         if (instance == null)

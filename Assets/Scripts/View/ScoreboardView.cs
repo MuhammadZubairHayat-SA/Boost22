@@ -15,6 +15,7 @@ public class ScoreboardView : MonoBehaviour
 	public TextMeshProUGUI[] scoreTexts;
 	public TextMeshProUGUI headline;
 	public Button playAgainButton;
+	public GameObject FadInout;
 
 	private Animator animator;
 	private int[] scores;
@@ -127,7 +128,9 @@ public class ScoreboardView : MonoBehaviour
 
 		playAgainButton.gameObject.SetActive(true);
 		MatchController.instance.UpdateData();
-        MatchController.instance.TryToSubmitScore();
+		MatchController.instance.TryToSubmitScore();
+		FadInout.GetComponent<Animator>().enabled = true;
+		Screen.orientation=ScreenOrientation.Portrait;
 	}
 
 
@@ -153,6 +156,8 @@ public class ScoreboardView : MonoBehaviour
 		headline.gameObject.SetActive(true);
 		MatchController.instance.UpdateData();
 		MatchController.instance.TryToSubmitScore();
+		FadInout.GetComponent<Animator>().enabled = true;
+		Screen.orientation=ScreenOrientation.Portrait;
 		playAgainButton.gameObject.SetActive(true);
 	}
 
@@ -173,7 +178,10 @@ public class ScoreboardView : MonoBehaviour
 
 	public void GameWonBtn()
 	{
+		
 		MatchController.instance.UpdateData();
 		MatchController.instance.TryToSubmitScore();
+		FadInout.GetComponent<Animator>().enabled = true;
+		Screen.orientation=ScreenOrientation.Portrait;
 	}
 }
